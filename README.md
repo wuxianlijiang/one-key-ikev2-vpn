@@ -1,5 +1,4 @@
-# 一键搭建适用于Ubuntu/CentOS的IKEV2/L2TP的VPN
-
+# 一键搭建适用于Ubuntu/CentOS的IKEV2/L2TP的VPN  在腾讯云+SSL安装通过的分支
 ------
 [![Author](https://img.shields.io/badge/author-%40quericy-blue.svg)](https://quericy.me)   [![Platform](https://img.shields.io/badge/Platform-%20Ubuntu%2CCentOS%20-green.svg)]()  [![GitHub stars](https://img.shields.io/github/stars/quericy/one-key-ikev2-vpn.svg)](https://github.com/quericy/one-key-ikev2-vpn/stargazers)  [![GitHub license](https://img.shields.io/badge/license-GPLv3-yellowgreen.svg)](https://raw.githubusercontent.com/quericy/one-key-ikev2-vpn/master/LICENSE)
 
@@ -48,11 +47,17 @@
         1. **ca.cert.pem** 证书颁发机构的CA，比如Let‘s Encrypt的证书,或者其他链证书；
         2. **server.cert.pem** 签发的域名证书；
         3. **server.pem** 签发域名证书时用的私钥；
+4.1安装腾讯云后台申请的域名型ssl证书
+a.下载解压域名型证书后，把Apache文件夹中的文件按如下重命名：
+1_root_bundle.crt => ca.cert.pem
+2_123.domain.com.crt => server.cert.pem
+3_123.lijiangtv.com.key => server.pem
+b.把重命名过的文件上传到本脚本所以路径。
 
 5. 是否使用SNAT规则(可选).默认为不使用.使用前请确保服务器具有不变的**静态公网ip**,可提升防火墙对数据包的处理速度.如果服务器网络设置了NAT(如AWS的弹性ip机制),则填写网卡连接接口的ip地址(参见[KinonC](https://github.com/KinonC)提供的方案:[#36](https://github.com/quericy/one-key-ikev2-vpn/issues/36)).
 
 6. 补充网卡接口信息,为空则使用默认值(Xen、KVM默认使用eth0,OpenVZ默认使用venet0).如果服务器使用其他公网接口需要在此指定接口名称,**填写错误VPN连接后将无法访问外网**)
-
+6.1以本分支安装时，腾讯云应当使用1.
 7. 看到install Complete字样即表示安装完成。默认用户名密码将以黄字显示，可根据提示自行修改配置文件中的用户名密码,多用户则在配置文件中按格式一行一个(多用户时用户名不能使用%any),保存并重启服务生效。
 
 8. 将提示信息中的证书文件ca.cert.pem拷贝到客户端，修改后缀名为.cer后导入。ios设备使用Ikev1无需导入证书，而是需要在连接时输入共享密钥，共享密钥即是提示信息中的黄字PSK.
