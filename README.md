@@ -8,8 +8,8 @@
 =============
 > * 服务端要求：Ubuntu或者CentOS-6/7或者Debian
 > * 客户端：
- - iOS/OSX=>ikev1,ikev2
- - Andriod=>ikev1
+ - iOS/OSX=>ikev1,ikev2,IPSec
+ - Andriod=>ikev1,IPSec Xauth PSK
  - WindowsPhone=>ikev2
  - 其他Windows平台=>ikev2
 > * 可使用自己的私钥和根证书，也可自动生成
@@ -64,11 +64,17 @@
 8. 将提示信息中的证书文件ca.cert.pem拷贝到客户端，修改后缀名为.cer后导入。ios设备使用Ikev1无需导入证书，而是需要在连接时输入共享密钥，共享密钥即是提示信息中的黄字PSK.  
 9. 用户添加和PSK设置，均在 usr/local/etc/ipsec.secrets，按原格式添加。 vi操作：yy复制当前行，p粘贴。  
 
-客户端配置说明
+客户端简明配置
 =====
-* 连接的服务器地址和证书保持一致,即取决于签发证书ca.cert.pem时使用的是ip还是域名;
- 
-* **Android/iOS/OSX** 可使用ikeV1,认证方式为用户名+密码+预共享密钥(PSK);  如新版本Android没有ikeV1项，使用IPSec Xauth PSK模式，配置同ikeV1。  
+* 连接的服务器地址和证书保持一致,即取决于签发证书ca.cert.pem时使用的是ip还是域名;  
+* **iOS配置：**用Cisco Ipsec，认证方式为用户名+密码+预共享密钥(PSK) 。
+* **安卓配置**：使用IPSec Xauth PSK模式，认证方式为用户名+密码+预共享密钥(PSK)。
+* **Windows PC配置**：使用IkeV2,认证方式为用户名+密码。
+* **验证：**拨通后，在百度搜索关键字IP，显示服务器IP为正常。  
+
+客户端配置备查
+=====
+* **Android/iOS/OSX** 可使用ikeV1,认证方式为用户名+密码+预共享密钥(PSK);  如新版本Android没有ikeV1项，使用IPSec Xauth PSK模式，配置同ikeV1。  
 * **iOS** 用Cisco Ipsec,  认证方式为用户名+密码+预共享密钥(PSK) . 
 * **iOS/OSX/Windows7+/WindowsPhone8.1+/Linux** 均可使用IkeV2,认证方式为用户名+密码。`使用SSL证书`则无需导入证书；`使用自签名证书`则需要先导入证书才能连接,可将ca.cert.pem更改后缀名作为邮件附件发送给客户端,手机端也可通过浏览器导入,其中:
  * **iOS/OSX** 的远程ID和服务器地址保持一致,用户鉴定选择"用户名".如果通过浏览器导入,将证书放在可访问的远程外链上,并在**系统浏览器**(Safari)中访问外链地址.OSX证书需要设置为始终信任(添加方法见**[#58](https://github.com/quericy/one-key-ikev2-vpn/issues/58)**中[JiaHaoGong](https://github.com/JiaHaoGong)的截图);
