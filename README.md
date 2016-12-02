@@ -47,6 +47,8 @@
         1. **ca.cert.pem** 证书颁发机构的CA，比如Let‘s Encrypt的证书,或者其他链证书；
         2. **server.cert.pem** 签发的域名证书；
         3. **server.pem** 签发域名证书时用的私钥；
+  
+  
 4.1安装腾讯云后台申请的域名型ssl证书  
 a.下载解压域名型证书后，把Apache文件夹中的文件按如下重命名：  
 1_root_bundle.crt => ca.cert.pem  
