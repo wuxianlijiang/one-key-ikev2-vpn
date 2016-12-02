@@ -48,13 +48,12 @@
         2. **server.cert.pem** 签发的域名证书；
         3. **server.pem** 签发域名证书时用的私钥；
   
-  
-4.1安装腾讯云后台申请的域名型ssl证书  
-a.下载解压域名型证书后，把Apache文件夹中的文件按如下重命名：  
-1_root_bundle.crt => ca.cert.pem  
-2_123.domain.com.crt => server.cert.pem  
-3_123.lijiangtv.com.key => server.pem  
-b.把重命名过的文件上传到本脚本所在路径。
+  4.1安装腾讯云后台申请的域名型ssl证书  
+  a.下载解压域名型证书后，把Apache文件夹中的文件按如下重命名  
+  1_root_bundle.crt => ca.cert.pem  
+  2_123.domain.com.crt => server.cert.pem  
+  3_123.lijiangtv.com.key => server.pem  
+  b.把重命名过的文件上传到本脚本所在路径。
 
 5. 是否使用SNAT规则(可选).默认为不使用.使用前请确保服务器具有不变的**静态公网ip**,可提升防火墙对数据包的处理速度.如果服务器网络设置了NAT(如AWS的弹性ip机制),则填写网卡连接接口的ip地址(参见[KinonC](https://github.com/KinonC)提供的方案:[#36](https://github.com/quericy/one-key-ikev2-vpn/issues/36)).
 
@@ -62,14 +61,14 @@ b.把重命名过的文件上传到本脚本所在路径。
 6.1以本分支安装时，腾讯云应当使用1.
 7. 看到install Complete字样即表示安装完成。默认用户名密码将以黄字显示，可根据提示自行修改配置文件中的用户名密码,多用户则在配置文件中按格式一行一个(多用户时用户名不能使用%any),保存并重启服务生效。
 
-8. 将提示信息中的证书文件ca.cert.pem拷贝到客户端，修改后缀名为.cer后导入。ios设备使用Ikev1无需导入证书，而是需要在连接时输入共享密钥，共享密钥即是提示信息中的黄字PSK.
+8. 将提示信息中的证书文件ca.cert.pem拷贝到客户端，修改后缀名为.cer后导入。ios设备使用Ikev1无需导入证书，而是需要在连接时输入共享密钥，共享密钥即是提示信息中的黄字PSK.  
+9. 用户添加和PSK设置，均在 usr/local/etc/ipsec.secrets，按原格式添加。 vi操作：yy复制当前行，p粘贴。  
 
 客户端配置说明
 =====
 * 连接的服务器地址和证书保持一致,即取决于签发证书ca.cert.pem时使用的是ip还是域名;
  
-* **Android/iOS/OSX** 可使用ikeV1,认证方式为用户名+密码+预共享密钥(PSK);
-
+* **Android/iOS/OSX** 可使用ikeV1,认证方式为用户名+密码+预共享密钥(PSK);  如新版本Android没有ikeV1项，使用IPSec Xauth PSK模式，配置同ikeV1。
 * **iOS/OSX/Windows7+/WindowsPhone8.1+/Linux** 均可使用IkeV2,认证方式为用户名+密码。`使用SSL证书`则无需导入证书；`使用自签名证书`则需要先导入证书才能连接,可将ca.cert.pem更改后缀名作为邮件附件发送给客户端,手机端也可通过浏览器导入,其中:
  * **iOS/OSX** 的远程ID和服务器地址保持一致,用户鉴定选择"用户名".如果通过浏览器导入,将证书放在可访问的远程外链上,并在**系统浏览器**(Safari)中访问外链地址.OSX证书需要设置为始终信任(添加方法见**[#58](https://github.com/quericy/one-key-ikev2-vpn/issues/58)**中[JiaHaoGong](https://github.com/JiaHaoGong)的截图);
  * **Windows PC** 系统导入证书需要导入到**"本地计算机"**的"受信任的根证书颁发机构",以"当前用户"的导入方式是无效的.推荐运行mmc添加本地计算机的证书管理单元来操作;
